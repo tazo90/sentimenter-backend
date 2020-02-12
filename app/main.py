@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from starlette.staticfiles import StaticFiles
 
 from app.api.routes.api import router as api_router
 from app.db import engine, metadata, database
@@ -19,6 +20,7 @@ def get_application() -> FastAPI:
     )
 
     application.include_router(api_router, prefix="/api")
+    application.mount("/static", StaticFiles(directory="static"), name="static")
 
     return application
 

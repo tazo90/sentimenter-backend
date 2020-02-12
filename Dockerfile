@@ -7,6 +7,8 @@ WORKDIR /app
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+# tensorflow allocation memory fix
+ENV TF_CPP_MIN_LOG_LEVEL 3
 
 # copy requirements file
 COPY ./requirements.txt /app/requirements.txt
