@@ -2,4 +2,6 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ML_MODELS_PATH = BASE_DIR.joinpath('ml', 'models')
+STATIC_DIR = BASE_DIR.parent.joinpath('static')
+
+ML_MODELS_DIR = BASE_DIR.joinpath('ml', 'models')

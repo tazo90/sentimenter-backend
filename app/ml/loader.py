@@ -1,6 +1,6 @@
 import re
 
-from app.core.config import ML_MODELS_PATH
+from app.core.config import ML_MODELS_DIR
 
 TAG_RE = re.compile(r'<[^>]+>')
 
@@ -11,7 +11,7 @@ class DatasetLoader:
         self.load(filename)
 
     def load(self, filename):
-        self.raw_dataset = pd.read_csv(ML_MODELS_PATH.joinpath(filename))
+        self.raw_dataset = pd.read_csv(ML_MODELS_DIR.joinpath(filename))
 
     def remove_tags(self, text):
         return TAG_RE.sub('', text)

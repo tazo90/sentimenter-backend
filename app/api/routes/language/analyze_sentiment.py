@@ -2,33 +2,50 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException, Path
 
+from app.core.config import STATIC_DIR
 from app.models.domain.sentiment import Sentiment
 from app.models.schemas.sentiment import SentimentOut
 from app.ml.lstm import LSTM
+from app.ml.vader import Vader
+from app.ml.linear_svc import LinearSVC
+from app.ml.utils import build_wordcloud
 
 router = APIRouter()
+
+models = {"lstm": LSTM, "bert": None, "vader": Vader, "linear_svc": LinearSVC}
 
 
 @router.post("/", response_model=SentimentOut)
 async def analyze(payload: Sentiment):
     data = payload.dict()
+    text, lang = data["text"], data["language"]
 
-    lstm = LSTM(
-        model_name=data["model"],
-        dataset="imdb",
-        language=data["language"]
-    )
+    scores = []
+    word_cloud_url = build_wordcloud(text=text, lang=lang)
 
-    score = lstm.predict(sentence=data["text"])[0][0]
-    tag_name = 'Positive' if score >= 0.5 else 'Negative'
-    model_info = lstm.model_info()
+    for model_name in data["model"]:
+        model_class = models[model_name]
+
+        model = model_class(
+            model_name=model_name, dataset="imdb", language=lang
+        )
+
+        tag_name, score = model.predict(sentence=text)
+
+        if hasattr(model, "model_info"):
+            model_info = model.model_info()
+        else:
+            model_info = None
+
+        scores.append({
+            "model_name": model_name,
+            "score": score,
+            "tag_name": tag_name,
+            "model_info": model_info,
+        })
 
     return {
-        "text": data["text"],
-        "tag_name": tag_name,
-        "score": str(score),
-        "model_info": {
-            "vocab_size": model_info["vocab_size"],
-            "word_cloud_url": "http://localhost:8000/static/lstm-imdb-en-word-cloud.png"
-        }
+        "text": text, 
+        "scores": scores, 
+        "word_cloud_url": word_cloud_url
     }
