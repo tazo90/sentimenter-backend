@@ -20,5 +20,9 @@ RUN apt-get update \
     && pip install -r /app/requirements.txt
 # && rm -rf /root/.cache/pip
 
+# install spacy en model & vader_lexicon
+RUN python -m spacy download en_core_web_sm
+RUN python -m nltk.downloader vader_lexicon
+
 # copy project
 COPY . /app/
