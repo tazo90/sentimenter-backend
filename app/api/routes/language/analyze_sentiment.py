@@ -2,7 +2,6 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException, Path
 
-from app.core.config import STATIC_DIR
 from app.models.domain.sentiment import Sentiment
 from app.models.schemas.sentiment import SentimentOut
 from app.ml.lstm import LSTM

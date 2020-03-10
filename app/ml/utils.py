@@ -3,6 +3,8 @@ import matplotlib.pylab as plt
 from wordcloud import WordCloud
 from many_stop_words import get_stop_words
 
+from app.core.config import STATIC_DIR
+
 def build_wordcloud(text, lang):
     stop_words = get_stop_words(lang)
     wordcloud = WordCloud(
