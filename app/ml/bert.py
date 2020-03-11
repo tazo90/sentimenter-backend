@@ -6,7 +6,7 @@ import matplotlib.pylab as plt
 from wordcloud import WordCloud
 from many_stop_words import get_stop_words
 
-from app.core.config import ML_MODELS_PATH
+from app.core.config import ML_MODELS_DIR
 from app.ml.loader import DatasetLoader
 
 import math

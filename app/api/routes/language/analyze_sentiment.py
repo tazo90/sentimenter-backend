@@ -1,40 +1,31 @@
-from typing import List
-
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter
 
 from app.models.domain.sentiment import Sentiment
 from app.models.schemas.sentiment import SentimentOut
-from app.ml.lstm import LSTM
-from app.ml.vader import Vader
-from app.ml.linear_svc import LinearSVC
 from app.ml.utils import build_wordcloud
+from app.ml.base import ModelFactory
 
 router = APIRouter()
-
-models = {"lstm": LSTM, "bert": None, "vader": Vader, "linear_svc": LinearSVC}
 
 
 @router.post("/", response_model=SentimentOut)
 async def analyze(payload: Sentiment):
+    scores = []
     data = payload.dict()
     text, lang = data["text"], data["language"]
-
-    scores = []
     word_cloud_url = build_wordcloud(text=text, lang=lang)
 
     for model_name in data["model"]:
-        model_class = models[model_name]
+        model_key = f"{model_name}_{lang}"
 
-        model = model_class(
-            model_name=model_name, dataset="imdb", language=lang
-        )
+        print(ModelFactory.registry)
+        model = ModelFactory.create(model_key)
 
         tag_name, score = model.predict(sentence=text)
 
+        model_info = None
         if hasattr(model, "model_info"):
             model_info = model.model_info()
-        else:
-            model_info = None
 
         scores.append({
             "model_name": model_name,
@@ -44,7 +35,7 @@ async def analyze(payload: Sentiment):
         })
 
     return {
-        "text": text, 
-        "scores": scores, 
+        "text": text,
+        "scores": scores,
         "word_cloud_url": word_cloud_url
     }

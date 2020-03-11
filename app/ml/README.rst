@@ -5,7 +5,7 @@ LSTM network usage
 
     from app.ml.lstm import LSTM
 
-    lstm=LSTM(model_name='lstm', dataset='imdb', language='en')
+    lstm=LSTM(model_name='lstm', language='en')
 
     lstm.predict(sentence='I like you')
 
@@ -18,7 +18,7 @@ BERT network usage
 
     from app.ml.bert import BERT
 
-    bert=BERT(model_name='bert', dataset='imdb', language='en')
+    bert=BERT(model_name='bert', language='en')
 
     bert.predict(sentence='I like you')
 

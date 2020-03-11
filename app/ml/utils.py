@@ -5,6 +5,7 @@ from many_stop_words import get_stop_words
 
 from app.core.config import STATIC_DIR
 
+
 def build_wordcloud(text, lang):
     stop_words = get_stop_words(lang)
     wordcloud = WordCloud(
@@ -13,16 +14,15 @@ def build_wordcloud(text, lang):
         max_words=200,
         max_font_size=40,
         random_state=42
-    ).generate(str(text))    
+    ).generate(str(text))
 
     target_dir = "wordcloud"
     filename = f"{uuid4().hex[:10]}.png"
+    #filename = "cloud.png"
 
-    fig = plt.figure(1)
     plt.imshow(wordcloud)
     plt.axis("off")
     out_file = f"{target_dir}/{filename}"
-    plt.savefig(STATIC_DIR.joinpath(out_file), bbox_inches="tight")    
+    plt.savefig(STATIC_DIR.joinpath(out_file), bbox_inches="tight")
 
     return f"http://localhost:8000/static/{out_file}"
-    

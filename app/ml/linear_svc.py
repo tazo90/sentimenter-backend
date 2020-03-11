@@ -3,14 +3,8 @@ import string
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 
-import pandas as pd
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
-
 from app.core.config import ML_MODELS_DIR
+from app.ml.base import ModelFactory
 
 nlp = spacy.load("en_core_web_sm")
 sent = nlp.create_pipe("sentencizer")
@@ -46,6 +40,7 @@ class CustomUnpickler(pickle.Unpickler):
         return super().find_class(module, name)
 
 
+@ModelFactory.register('linear_svc_en')
 class LinearSVC:
     def __init__(self, model_name=None, dataset=None, language=None):
 

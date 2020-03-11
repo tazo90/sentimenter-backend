@@ -4,6 +4,8 @@ import spacy
 from spacy.tokens import Doc
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
+from app.ml.base import ModelFactory
+
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -17,9 +19,8 @@ def sentiment_scores(docx):
 Doc.set_extension("sentimenter", getter=sentiment_scores)
 
 
+@ModelFactory.register('vader_en')
 class Vader:
-    def __init__(self, model_name=None, dataset=None, language=None):
-        pass
 
     def predict(self, sentence):
         result = nlp(sentence)

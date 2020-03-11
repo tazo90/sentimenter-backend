@@ -4,13 +4,16 @@ from enum import Enum
 
 
 TagTypes = Enum(
-    "TagTypes", {"negative": "Negative", "neutral": "Neutral", "positive": "Positive",}
+    "TagTypes", {
+        "negative": "Negative",
+        "neutral": "Neutral",
+        "positive": "Positive",
+    }
 )
 
 
 class ModelInfoOut(BaseModel):
     vocab_size: int
-    dataset: str
 
 
 class ScoreOut(BaseModel):
