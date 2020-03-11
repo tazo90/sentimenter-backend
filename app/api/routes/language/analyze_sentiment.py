@@ -18,7 +18,6 @@ async def analyze(payload: Sentiment):
     for model_name in data["model"]:
         model_key = f"{model_name}_{lang}"
 
-        print(ModelFactory.registry)
         model = ModelFactory.create(model_key)
 
         tag_name, score = model.predict(sentence=text)

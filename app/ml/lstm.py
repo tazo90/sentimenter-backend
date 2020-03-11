@@ -76,7 +76,7 @@ class LSTMPolish(LSTMBase):
         positive = "{:.2f}".format(float(pos)*100)
         negative = "{:.2f}".format(float(neg)*100)
 
-        print("RES", negative, neutral, positive)
+        print("Predict", negative, neutral, positive)
 
         if positive >= negative:
             tag_name = "Positive"
