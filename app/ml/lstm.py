@@ -72,11 +72,11 @@ class LSTMPolish(LSTMBase):
         padded_sequences = self.get_padded_sequences(sentence=sentence)
 
         neu, pos, neg = self.model.predict(padded_sequences)[0]
-        neutral = "{:.2f}".format(float(neu)*100)
-        positive = "{:.2f}".format(float(pos)*100)
-        negative = "{:.2f}".format(float(neg)*100)
+        neutral = float("{:.2f}".format(float(neu)*100))
+        positive = float("{:.2f}".format(float(pos)*100))
+        negative = float("{:.2f}".format(float(neg)*100))
 
-        print("Predict", negative, neutral, positive)
+        print("Predict", neutral, positive, negative)
 
         if positive >= negative:
             tag_name = "Positive"
